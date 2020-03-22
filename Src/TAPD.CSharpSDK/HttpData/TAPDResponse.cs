@@ -4,10 +4,10 @@ namespace TAPD.CSharpSDK
 {
     public class TAPDResponse<T>
     {
-        public TAPDHttpStatus status;
+        public TAPDHttpStatus status { get; set; }
 
-        public string info;
+        public string info { get; set; }
 
-        public T data;
+        public T data { get; set; }
     }
 }

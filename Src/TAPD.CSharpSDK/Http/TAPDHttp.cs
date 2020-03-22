@@ -15,9 +15,9 @@ namespace TAPD.CSharpSDK
         /// <param name="data"></param>
         /// <param name="method"></param>
         /// <param name="contentType"></param>
-        public static T Request<T>(string url, string data = "", string method = "", string contentType = "")
+        public static T Request<T>(string url, string authorization = "", string data = "", string method = "Get", string contentType = "")
         {
-            string content = Request(url, data, method, contentType);
+            string content = Request(url, authorization, data, method, contentType);
 
             T result = JsonConvert.DeserializeObject<T>(content);
 
@@ -32,7 +32,7 @@ namespace TAPD.CSharpSDK
         /// <param name="data"></param>
         /// <param name="method"></param>
         /// <param name="contentType"></param>
-        public static string Request(string url, string data = "", string method = "", string contentType = "")
+        public static string Request(string url, string authorization = "", string data = "", string method = "Get", string contentType = "")
         {
             string content = "";
 
@@ -42,21 +42,18 @@ namespace TAPD.CSharpSDK
             {
                 webRequest = WebRequest.Create(url) as HttpWebRequest;
 
-                HttpWebResponse webResponse = webRequest.GetResponse() as HttpWebResponse;
+                webRequest.Method = method;
+                webRequest.Headers.Add("Authorization", authorization);
                 
-                if(webResponse != null)
-                {
-                    using (StreamReader reader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8))
-                    {
-                        content = reader.ReadToEnd();
-                    }
+                HttpWebResponse webResponse = webRequest.GetResponse() as HttpWebResponse;
 
-                    webResponse.Close();
-                }
+                content = ReadWebResponse(webResponse);
             }
             catch (WebException webException)
             {
-                throw webException;
+                HttpWebResponse webResponse = webException.Response as HttpWebResponse;
+
+                content = ReadWebResponse(webResponse);
             }
             catch (Exception ex)
             {
@@ -68,6 +65,28 @@ namespace TAPD.CSharpSDK
                 {
                     webRequest.Abort();
                 }
+            }
+
+            return content;
+        }
+
+        /// <summary>
+        /// 读取返回的数据
+        /// </summary>
+        /// <param name="webResponse"></param>
+        /// <returns></returns>
+        private static string ReadWebResponse(HttpWebResponse webResponse)
+        {
+            string content = null;
+
+            if (webResponse != null)
+            {
+                using (StreamReader reader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8))
+                {
+                    content = reader.ReadToEnd();
+                }
+
+                webResponse.Close();
             }
 
             return content;

@@ -69,29 +69,62 @@ namespace TAPD.CSharpSDK.Tests
         }
 
         /// <summary>
-        /// 枚举属性构造函数测试
+        /// 整型枚举属性构造函数测试
         /// </summary>
         /// <param name="enums"></param>
         /// <returns></returns>
-        [TestCase("A", ExpectedResult = "A")]
-        [TestCase("A", "B", "C", ExpectedResult = "A|B|C")]
-        public string EnumProperty_Structure_Succeed(params string[] enums)
+        [TestCase(123, ExpectedResult = "123")]
+        [TestCase(123, 456, 777, ExpectedResult = "123|456|777")]
+        public string EnumIntProperty_Structure_Succeed(params int[] enums)
         {
-            EnumProperty property = new EnumProperty(enums);
+            EnumIntProperty property = new EnumIntProperty(enums);
 
             return property.ToString();
         }
 
         /// <summary>
-        /// 枚举属性添加测试
+        /// 整型枚举属性添加测试
+        /// </summary>
+        /// <param name="enums"></param>
+        /// <returns></returns>
+        [TestCase(123, ExpectedResult = "123")]
+        [TestCase(123, 456, 777, ExpectedResult = "123|456|777")]
+        public string EnumIntProperty_Add_Succeed(params int[] enums)
+        {
+            EnumIntProperty property = new EnumIntProperty();
+
+            foreach (var item in enums)
+            {
+                property.AddEnum(item);
+            }
+
+            return property.ToString();
+        }
+
+        /// <summary>
+        /// 字符串枚举属性构造函数测试
         /// </summary>
         /// <param name="enums"></param>
         /// <returns></returns>
         [TestCase("A", ExpectedResult = "A")]
         [TestCase("A", "B", "C", ExpectedResult = "A|B|C")]
-        public string EnumProperty_Add_Succeed(params string[] enums)
+        public string EnumStringProperty_Structure_Succeed(params string[] enums)
         {
-            EnumProperty property = new EnumProperty();
+            EnumStringProperty property = new EnumStringProperty(enums);
+
+            return property.ToString();
+        }
+
+        /// <summary>
+        /// 字符串枚举属性添加测试
+        /// </summary>
+        /// <param name="enums"></param>
+        /// <returns></returns>
+        [TestCase("A", ExpectedResult = "A")]
+        [TestCase("A", "B", "C", ExpectedResult = "A|B|C")]
+        public string EnumStringProperty_Add_Succeed(params string[] enums)
+        {
+            EnumStringProperty property = new EnumStringProperty();
 
             foreach (var item in enums)
             {

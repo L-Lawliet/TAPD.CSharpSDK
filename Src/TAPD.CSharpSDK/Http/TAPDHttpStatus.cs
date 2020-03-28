@@ -13,5 +13,15 @@ namespace TAPD.CSharpSDK
         /// 未授权
         /// </summary>
         Unauthorized = 401,
+
+        /// <summary>
+        /// 没有访问权限
+        /// </summary>
+        Forbidden = 403,
+
+        /// <summary>
+        /// 远程服务器返回错误
+        /// </summary>
+        ParamError = 422,
     }
 }

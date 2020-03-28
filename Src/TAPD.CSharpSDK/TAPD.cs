@@ -65,6 +65,24 @@ namespace TAPD.CSharpSDK
             }
         }
 
+        public int m_WorkspaceID;
+
+        /// <summary>
+        /// 项目ID
+        /// 原则上，单个TAPD类只能操控单个项目，以免两个项目请求混淆
+        /// </summary>
+        public int workspaceID
+        {
+            get
+            {
+                return m_WorkspaceID;
+            }
+            set
+            {
+                m_WorkspaceID = value;
+            }
+        }
+
         /// <summary>
         /// TAPD构建函数
         /// </summary>
@@ -78,10 +96,11 @@ namespace TAPD.CSharpSDK
         /// </summary>
         /// <param name="apiUser">账号</param>
         /// <param name="apiPassword">口令</param>
-        public TAPD(string apiUser, string apiPassword)
+        public TAPD(string apiUser, string apiPassword, int workspaceID = 0)
         {
             m_ApiUser = apiUser;
             m_ApiPassword = apiPassword;
+            m_WorkspaceID = workspaceID;
 
             SetAuthorization();
         }
@@ -101,9 +120,13 @@ namespace TAPD.CSharpSDK
         /// <param name="method">API方法名</param>
         /// <typeparam name="T"></typeparam>
         /// <returns>返回的包结构</returns>
-        public TAPDResponse<T> Request<T>(string method = "")
+        public TAPDResponse<T> Request<T>(string method = "", TAPDRequest request = null)
         {
             string path = "";
+
+            string data = "";
+
+            data = TAPDHttp.JoinHttpParameters<TAPDRequest>(m_WorkspaceID, request);
 
             if (string.IsNullOrEmpty(method))
             {
@@ -114,7 +137,7 @@ namespace TAPD.CSharpSDK
                 path = string.Format("{0}/{1}", TAPDHttpAPI.BASE_URL, method);
             }
 
-            TAPDResponse<T> response = TAPDHttp.Request<TAPDResponse<T>>(path, authorization);
+            TAPDResponse<T> response = TAPDHttp.Request<TAPDResponse<T>>(path, authorization, data);
 
             return response;
         }

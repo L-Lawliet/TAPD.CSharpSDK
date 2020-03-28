@@ -67,5 +67,106 @@ namespace TAPD.CSharpSDK.Tests
 
             return property.ToString();
         }
+
+        /// <summary>
+        /// 枚举属性构造函数测试
+        /// </summary>
+        /// <param name="enums"></param>
+        /// <returns></returns>
+        [TestCase("A", ExpectedResult = "A")]
+        [TestCase("A", "B", "C", ExpectedResult = "A|B|C")]
+        public string EnumProperty_Structure_Succeed(params string[] enums)
+        {
+            EnumProperty property = new EnumProperty(enums);
+
+            return property.ToString();
+        }
+
+        /// <summary>
+        /// 枚举属性添加测试
+        /// </summary>
+        /// <param name="enums"></param>
+        /// <returns></returns>
+        [TestCase("A", ExpectedResult = "A")]
+        [TestCase("A", "B", "C", ExpectedResult = "A|B|C")]
+        public string EnumProperty_Add_Succeed(params string[] enums)
+        {
+            EnumProperty property = new EnumProperty();
+
+            foreach (var item in enums)
+            {
+                property.AddEnum(item);
+            }
+
+            return property.ToString();
+        }
+
+        /// <summary>
+        /// ID属性构造函数测试
+        /// </summary>
+        /// <param name="enums"></param>
+        /// <returns></returns>
+        [TestCase(13211, ExpectedResult = "13211")]
+        [TestCase(12345, 4664, 46546, ExpectedResult = "12345,4664,46546")]
+        public string IDProperty_Structure_Succeed(params int[] ids)
+        {
+            IDProperty property = new IDProperty(ids);
+
+            return property.ToString();
+        }
+
+        /// <summary>
+        /// ID属性添加测试
+        /// </summary>
+        /// <param name="enums"></param>
+        /// <returns></returns>
+        [TestCase(13211, ExpectedResult = "13211")]
+        [TestCase(12345, 4664, 46546, ExpectedResult = "12345,4664,46546")]
+        public string IDProperty_Add_Succeed(params int[] enums)
+        {
+            IDProperty property = new IDProperty();
+
+            foreach (var item in enums)
+            {
+                property.AddID(item);
+            }
+
+            return property.ToString();
+        }
+
+        /// <summary>
+        /// 人员属性构造函数测试
+        /// </summary>
+        /// <param name="isAnd"></param>
+        /// <param name="persons"></param>
+        /// <returns></returns>
+        [TestCase(false, "A", "B", "C", ExpectedResult = "A|B|C")]
+        [TestCase(true, "A", "B", "C", ExpectedResult = "A;B;C")]
+        public string PersonProperty_Structure_Succeed(bool isAnd = false, params string[] persons)
+        {
+            PersonProperty property = new PersonProperty(isAnd, persons);
+
+            return property.ToString();
+        }
+
+        /// <summary>
+        /// 人员属性添加测试
+        /// </summary>
+        /// <param name="isAnd"></param>
+        /// <param name="persons"></param>
+        /// <returns></returns>
+        [TestCase(false, "A", "B", "C", ExpectedResult = "A|B|C")]
+        [TestCase(true, "A", "B", "C", ExpectedResult = "A;B;C")]
+        public string PersonProperty_Add_Succeed(bool isAnd = false, params string[] persons)
+        {
+            PersonProperty property = new PersonProperty(isAnd);
+
+            foreach (var item in persons)
+            {
+                property.AddPerson(item);
+            }
+            
+            return property.ToString();
+        }
     }
 }

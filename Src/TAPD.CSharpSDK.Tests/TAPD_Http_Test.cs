@@ -55,5 +55,58 @@ namespace TAPD.CSharpSDK.Tests
 
             Assert.AreEqual(response.status, TAPDHttpStatus.Unauthorized);
         }
+
+        /// <summary>
+        /// Http参数拼接成功测试
+        /// </summary>
+        /// <param name="workspaceID"></param>
+        /// <param name="intValue"></param>
+        /// <param name="stringValue"></param>
+        /// <param name="floatValue"></param>
+        /// <param name="resetNameValue"></param>
+        /// <param name="requiredValue"></param>
+        /// <returns></returns>
+        [TestCase(12345678, 100, "TestString", 0.618f, 312, "A", ExpectedResult = new string[] { "floatValue=0.618", "intValue=100", "requiredValue=A", "reset_name_value=312", "stringValue=TestString", "workspace_id=12345678" })]
+        [TestCase(12345678, 100, null, 0.618f, 312, "A", ExpectedResult = new string[] { "floatValue=0.618", "intValue=100", "requiredValue=A", "reset_name_value=312", "workspace_id=12345678" })]
+        public string[] HttpParameters_Join_Succeed(int workspaceID, int intValue, string stringValue, float floatValue, int resetNameValue, string requiredValue)
+        {
+            var request = new TAPDTestRequest();
+
+            request.intValue = intValue;
+            request.stringValue = stringValue;
+            request.floatValue = floatValue;
+            request.resetNameValue = resetNameValue;
+            request.requiredValue = requiredValue;
+
+            string result = TAPDHttp.JoinHttpParameters(workspaceID, request);
+
+            string[] stringList = result.Split('&');
+
+            Array.Sort(stringList);
+
+            return stringList;
+        }
+
+        /// <summary>
+        /// Http参数缺少必要参数异常测试
+        /// </summary>
+        [Test]
+        public void HttpParameters_Join_Required_Missing_Exception()
+        {
+            TAPDRequiredParameterMissingException exception = null;
+
+            try
+            {
+                var request = new TAPDTestRequest();
+
+                string result = TAPDHttp.JoinHttpParameters(12345678, request);
+            }
+            catch (TAPDRequiredParameterMissingException ex)
+            {
+                exception = ex;
+            }
+
+            Assert.AreNotEqual(exception, null);
+        }
     }
 }

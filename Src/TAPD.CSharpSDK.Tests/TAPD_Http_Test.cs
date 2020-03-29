@@ -23,7 +23,7 @@ namespace TAPD.CSharpSDK.Tests
         [Test]
         public void Request_API_Succeed()
         {
-            var response = TAPDHttp.Request<TAPDResponse<string>>(TAPDHttpAPI.BASE_URL);
+            var response = TAPDHttp.Request<string>(TAPDHttpAPI.BASE_URL);
 
             Assert.AreEqual(response.status, TAPDHttpStatus.Succeed);
         }

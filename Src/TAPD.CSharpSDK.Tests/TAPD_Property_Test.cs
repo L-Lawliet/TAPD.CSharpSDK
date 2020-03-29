@@ -141,7 +141,7 @@ namespace TAPD.CSharpSDK.Tests
         /// <returns></returns>
         [TestCase(13211, ExpectedResult = "13211")]
         [TestCase(12345, 4664, 46546, ExpectedResult = "12345,4664,46546")]
-        public string IDProperty_Structure_Succeed(params int[] ids)
+        public string IDProperty_Structure_Succeed(params long[] ids)
         {
             IDProperty property = new IDProperty(ids);
 

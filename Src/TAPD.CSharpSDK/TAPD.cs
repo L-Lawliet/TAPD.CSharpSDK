@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Text;
 
 namespace TAPD.CSharpSDK
@@ -109,9 +110,9 @@ namespace TAPD.CSharpSDK
         /// 请求需求数据
         /// </summary>
         /// <returns></returns>
-        public TAPDResponse<TAPDStory[]> RequestStories()
+        public TAPDResponse<TAPDStory[]> RequestStories(TAPDStoriesRequest request = null)
         {
-            return Request<TAPDStory[]>(TAPDHttpAPI.STORIES);
+            return Request<TAPDStory[]>(TAPDHttpAPI.STORIES, request, new TAPDConverter<TAPDStory>(TAPDHttpPropertyName.STORY));
         }
 
         /// <summary>
@@ -120,7 +121,7 @@ namespace TAPD.CSharpSDK
         /// <param name="method">API方法名</param>
         /// <typeparam name="T"></typeparam>
         /// <returns>返回的包结构</returns>
-        public TAPDResponse<T> Request<T>(string method = "", TAPDRequest request = null)
+        public TAPDResponse<T> Request<T>(string method = "", TAPDRequest request = null, JsonConverter converter = null)
         {
             string path = "";
 
@@ -134,10 +135,19 @@ namespace TAPD.CSharpSDK
             }
             else
             {
-                path = string.Format("{0}/{1}", TAPDHttpAPI.BASE_URL, method);
+                path = string.Format("{0}{1}", TAPDHttpAPI.BASE_URL, method);
             }
 
-            TAPDResponse<T> response = TAPDHttp.Request<TAPDResponse<T>>(path, authorization, data);
+            TAPDResponse<T> response;
+
+            if (converter != null)
+            {
+                response = TAPDHttp.Request<T>(path, converter, authorization, data);
+            }
+            else
+            {
+                response = TAPDHttp.Request<T>(path, authorization, data);
+            }
 
             return response;
         }

@@ -13,30 +13,30 @@ namespace TAPD.CSharpSDK
         /// <summary>
         /// ID组合
         /// </summary>
-        public List<int> m_IDs;
+        public List<long> m_IDs;
 
         /// <summary>
         /// 
         /// </summary>
         public IDProperty()
         {
-            m_IDs = new List<int>();
+            m_IDs = new List<long>();
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ids"></param>
-        public IDProperty(params int[] ids)
+        public IDProperty(params long[] ids)
         {
-            m_IDs = new List<int>(ids);
+            m_IDs = new List<long>(ids);
         }
 
         /// <summary>
         /// 添加ID
         /// </summary>
         /// <param name="id"></param>
-        public void AddID(int id)
+        public void AddID(long id)
         {
             if (!m_IDs.Contains(id))
             {
@@ -48,7 +48,7 @@ namespace TAPD.CSharpSDK
         /// 移除ID
         /// </summary>
         /// <param name="id"></param>
-        public void RemovePerson(int id)
+        public void RemovePerson(long id)
         {
             m_IDs.Remove(id);
         }
@@ -63,7 +63,7 @@ namespace TAPD.CSharpSDK
 
             if(m_IDs != null && m_IDs.Count > 0)
             {
-                result = StringUtil.Join<int>(OR_CHAR, m_IDs);
+                result = StringUtil.Join<long>(OR_CHAR, m_IDs);
             }
 
             return result;

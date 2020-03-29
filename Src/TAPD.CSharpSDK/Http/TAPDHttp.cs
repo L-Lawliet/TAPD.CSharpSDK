@@ -19,11 +19,27 @@ namespace TAPD.CSharpSDK
         /// <param name="data"></param>
         /// <param name="method"></param>
         /// <param name="contentType"></param>
-        public static T Request<T>(string url, string authorization = "", string data = "", string method = "Get", string contentType = "")
+        public static TAPDResponse<T> Request<T>(string url, JsonConverter converter, string authorization = "", string data = "", string method = "Get", string contentType = "")
         {
             string content = Request(url, authorization, data, method, contentType);
 
-            T result = JsonConvert.DeserializeObject<T>(content);
+            TAPDResponse<T> result = JsonConvert.DeserializeObject<TAPDResponse<T>>(content, converter);
+
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="data"></param>
+        /// <param name="method"></param>
+        /// <param name="contentType"></param>
+        public static TAPDResponse<T> Request<T>(string url, string authorization = "", string data = "", string method = "Get", string contentType = "")
+        {
+            string content = Request(url, authorization, data, method, contentType);
+
+            TAPDResponse<T> result = JsonConvert.DeserializeObject<TAPDResponse<T>>(content);
 
             return result;
         }
@@ -88,6 +104,8 @@ namespace TAPD.CSharpSDK
         {
             url = string.Format("{0}?{1}", url, data);
 
+            Console.WriteLine(url);
+
             HttpWebRequest webRequest = WebRequest.Create(url) as HttpWebRequest;
 
             return webRequest;
@@ -128,7 +146,12 @@ namespace TAPD.CSharpSDK
 
             m_StringBuilder.AppendFormat("workspace_id={0}", workspaceID);
 
-            Type type = typeof(T);
+            if(request == null)
+            {
+                return m_StringBuilder.ToString();
+            }
+
+            Type type = request.GetType();
 
             PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 

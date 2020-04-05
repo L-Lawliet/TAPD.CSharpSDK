@@ -118,35 +118,49 @@ namespace TAPD.CSharpSDK
         /// <summary>
         /// 请求协议
         /// </summary>
-        /// <param name="method">API方法名</param>
+        /// <param name="api">API方法名</param>
         /// <typeparam name="T"></typeparam>
         /// <returns>返回的包结构</returns>
-        public TAPDResponse<T> Request<T>(string method = "", TAPDRequest request = null, JsonConverter converter = null)
+        public TAPDResponse<T> Request<T>(string api = "", TAPDRequest request = null, JsonConverter converter = null)
         {
             string path = "";
 
             string data = "";
 
+            TAPDHttpMethod method = TAPDHttpMethod.Get;
+
+            //拼接参数
             data = TAPDHttp.JoinHttpParameters<TAPDRequest>(m_WorkspaceID, request);
 
-            if (string.IsNullOrEmpty(method))
+            if (string.IsNullOrEmpty(api))
             {
                 path = TAPDHttpAPI.BASE_URL;
             }
             else
             {
-                path = string.Format("{0}{1}", TAPDHttpAPI.BASE_URL, method);
+                path = string.Format("{0}{1}", TAPDHttpAPI.BASE_URL, api);
+            }
+
+            if(request != null)
+            {
+                //获取请求的http参数
+                TAPDHttpAttribute httpAttribute = ReflectionUtil.GetCustomAttributes<TAPDHttpAttribute>(request.GetType());
+
+                if (httpAttribute != null)
+                {
+                    method = httpAttribute.method;
+                }
             }
 
             TAPDResponse<T> response;
 
             if (converter != null)
             {
-                response = TAPDHttp.Request<T>(path, converter, authorization, data);
+                response = TAPDHttp.Request<T>(path, converter, authorization, data, method);
             }
             else
             {
-                response = TAPDHttp.Request<T>(path, authorization, data);
+                response = TAPDHttp.Request<T>(path, authorization, data, method);
             }
 
             return response;

@@ -19,7 +19,7 @@ namespace TAPD.CSharpSDK
         /// <param name="data"></param>
         /// <param name="method"></param>
         /// <param name="contentType"></param>
-        public static TAPDResponse<T> Request<T>(string url, JsonConverter converter, string authorization = "", string data = "", string method = "Get", string contentType = "")
+        public static TAPDResponse<T> Request<T>(string url, JsonConverter converter, string authorization = "", string data = "", TAPDHttpMethod method = TAPDHttpMethod.Get, string contentType = "")
         {
             string content = Request(url, authorization, data, method, contentType);
 
@@ -35,7 +35,7 @@ namespace TAPD.CSharpSDK
         /// <param name="data"></param>
         /// <param name="method"></param>
         /// <param name="contentType"></param>
-        public static TAPDResponse<T> Request<T>(string url, string authorization = "", string data = "", string method = "Get", string contentType = "")
+        public static TAPDResponse<T> Request<T>(string url, string authorization = "", string data = "", TAPDHttpMethod method = TAPDHttpMethod.Get, string contentType = "")
         {
             string content = Request(url, authorization, data, method, contentType);
 
@@ -52,7 +52,7 @@ namespace TAPD.CSharpSDK
         /// <param name="data"></param>
         /// <param name="method"></param>
         /// <param name="contentType"></param>
-        public static string Request(string url, string authorization = "", string data = "", string method = "Get", string contentType = "")
+        public static string Request(string url, string authorization = "", string data = "", TAPDHttpMethod method = TAPDHttpMethod.Get, string contentType = "")
         {
             string content = "";
 
@@ -62,16 +62,16 @@ namespace TAPD.CSharpSDK
             {
                 switch (method)
                 {
-                    case "Get":
+                    case TAPDHttpMethod.Get:
                         webRequest = CreateGetRequest(url, data);
                         break;
-                    case "Post":
+                    case TAPDHttpMethod.Post:
                         break;
                     default:
                         return "";
                 }
 
-                webRequest.Method = method;
+                webRequest.Method = Enum.GetName(typeof(TAPDHttpMethod), method);
                 webRequest.Headers.Add("Authorization", authorization);
                 webRequest.ContentType = contentType;
 
@@ -159,16 +159,16 @@ namespace TAPD.CSharpSDK
             {
                 var property = properties[i];
 
-                var ignoreAttribute = GetCustomAttributes<TAPDIgnoreAttribute>(property);
+                var ignoreAttribute = ReflectionUtil.GetCustomAttributes<TAPDIgnoreAttribute>(property);
 
                 if (ignoreAttribute != null)
                 {
                     continue;
                 }
 
-                var propertyAttribute = GetCustomAttributes<TAPDPropertyNameAttribute>(property);
+                var propertyAttribute = ReflectionUtil.GetCustomAttributes<TAPDPropertyNameAttribute>(property);
 
-                var requiredAttribute = GetCustomAttributes<TAPDRequiredAttribute>(property);
+                var requiredAttribute = ReflectionUtil.GetCustomAttributes<TAPDRequiredAttribute>(property);
 
                 bool hasProperty = false;
 
@@ -213,21 +213,6 @@ namespace TAPD.CSharpSDK
             string result = m_StringBuilder.ToString();
 
             return result;
-        }
-
-        private static TAttribute GetCustomAttributes<TAttribute>(PropertyInfo propertyInfo) where TAttribute : Attribute
-        {
-            object[] attributes = propertyInfo.GetCustomAttributes(typeof(TAttribute), false);
-
-            foreach (object attribute in attributes)
-            {
-                if(attribute.GetType() == typeof(TAttribute))
-                {
-                    return attribute as TAttribute;
-                }
-            }
-
-            return null;
         }
     }
 }

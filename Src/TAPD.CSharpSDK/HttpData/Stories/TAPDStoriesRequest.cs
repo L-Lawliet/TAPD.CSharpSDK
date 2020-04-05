@@ -7,6 +7,7 @@ namespace TAPD.CSharpSDK
     /// 
     /// https://www.tapd.cn/help/获取需求接口#1120003271001002708
     /// </summary>
+    [TAPDHttpAttribute(TAPDHttpMethod.Get)]
     public class TAPDStoriesRequest : TAPDRequest
     {
         /// <summary>

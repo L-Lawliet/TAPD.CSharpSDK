@@ -116,6 +116,16 @@ namespace TAPD.CSharpSDK
         }
 
         /// <summary>
+        /// 查询需求数量
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public TAPDResponse<Int32> RequestStoriesCount(TAPDStoriesCountRequest request = null)
+        {
+            return Request<Int32>(TAPDHttpAPI.STORIES_COUNT, request, new TAPDConverter<Int32>(TAPDHttpPropertyName.COUNT));
+        }
+
+        /// <summary>
         /// 请求协议
         /// </summary>
         /// <param name="api">API方法名</param>

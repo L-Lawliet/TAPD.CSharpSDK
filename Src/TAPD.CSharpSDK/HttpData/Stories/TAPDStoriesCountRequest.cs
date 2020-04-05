@@ -3,12 +3,12 @@
 namespace TAPD.CSharpSDK
 {
     /// <summary>
-    /// 获取需求接口
+    /// 获取需求数量接口
     /// 
-    /// https://www.tapd.cn/help/view#1120003271001002708
+    /// https://www.tapd.cn/help/view#1120003271001001487
     /// </summary>
     [TAPDHttpAttribute(TAPDHttpMethod.Get)]
-    public class TAPDStoriesRequest : TAPDRequest
+    public class TAPDStoriesCountRequest : TAPDRequest
     {
         /// <summary>
         /// ID	
@@ -189,22 +189,5 @@ namespace TAPD.CSharpSDK
         /// </summary>
         [TAPDIgnore]
         public string[] custom_fields { get; set; }
-
-        /// <summary>
-        /// 设置返回数量限制，默认为30
-        /// </summary>
-        public Nullable<int> limit { get; set; }
-
-        /// <summary>
-        /// 返回当前数量限制下第N页的数据，默认为1（第一页）	
-        /// </summary>
-        public Nullable<int> page { get; set; }
-
-        /// <summary>
-        /// 设置获取的字段，多个字段间以','逗号隔开
-        /// 未实现
-        /// </summary>
-        [TAPDIgnore]
-        public string fields { get; set; }  
     }
 }

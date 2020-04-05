@@ -8,5 +8,10 @@ namespace TAPD.CSharpSDK
         /// 需求名称
         /// </summary>
         public const string STORY = "Story";
+
+        /// <summary>
+        /// 计数
+        /// </summary>
+        public const string COUNT = "count";
     }
 }

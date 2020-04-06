@@ -8,6 +8,12 @@ using System.Text;
 
 namespace TAPD.CSharpSDK
 {
+    /// <summary>
+    /// TAPD Http请求实现类
+    /// 
+    /// note:
+    ///     1. POST请求下，需要先设置Authorization之后，再写入参数，不然服务器无法识别Authorization
+    /// </summary>
     public class TAPDHttp
     {
         private static StringBuilder m_StringBuilder = new StringBuilder();
@@ -63,16 +69,17 @@ namespace TAPD.CSharpSDK
                 switch (method)
                 {
                     case TAPDHttpMethod.Get:
-                        webRequest = CreateGetRequest(url, data);
+                        webRequest = CreateGetRequest(url, authorization, data);
                         break;
                     case TAPDHttpMethod.Post:
+                        webRequest = CreatePostRequest(url, authorization, data);
                         break;
                     default:
                         return "";
                 }
 
-                webRequest.Method = Enum.GetName(typeof(TAPDHttpMethod), method);
-                webRequest.Headers.Add("Authorization", authorization);
+                //webRequest.Method = Enum.GetName(typeof(TAPDHttpMethod), method);
+                //webRequest.Headers.Add("Authorization", authorization);
                 webRequest.ContentType = contentType;
 
                 HttpWebResponse webResponse = webRequest.GetResponse() as HttpWebResponse;
@@ -100,13 +107,53 @@ namespace TAPD.CSharpSDK
             return content;
         }
 
-        private static HttpWebRequest CreateGetRequest(string url, string data = "")
+        /// <summary>
+        /// 创建Get请求
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="authorization"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private static HttpWebRequest CreateGetRequest(string url, string authorization, string data = "")
         {
             url = string.Format("{0}?{1}", url, data);
 
             Console.WriteLine(url);
 
             HttpWebRequest webRequest = WebRequest.Create(url) as HttpWebRequest;
+
+            webRequest.Headers.Add("Authorization", authorization);
+
+            webRequest.Method = "Get";
+
+            return webRequest;
+        }
+
+        /// <summary>
+        /// 创建Post请求
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="authorization"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private static HttpWebRequest CreatePostRequest(string url, string authorization, string data = "")
+        {
+            HttpWebRequest webRequest = WebRequest.Create(url) as HttpWebRequest;
+
+            webRequest.Headers.Add("Authorization", authorization);
+
+            webRequest.Method = "Post";
+
+            webRequest.ContentType = "application/x-www-form-urlencoded;charset=utf-8";
+
+            Console.WriteLine(data);
+
+            var byteData = Encoding.UTF8.GetBytes(data);
+            var length = byteData.Length;
+            webRequest.ContentLength = length;
+            var writer = webRequest.GetRequestStream();
+            writer.Write(byteData, 0, length);
+            writer.Close();
 
             return webRequest;
         }

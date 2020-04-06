@@ -99,5 +99,30 @@ namespace TAPD.CSharpSDK.Tests
 
             Assert.IsNotNull(response.data.id);
         }
+
+        /// <summary>
+        /// 修改需求的名称
+        /// </summary>
+        [TestCase(TAPDTestProjectSetting.STORY_ID_2, "change_name_2", TAPDTestProjectSetting.STORY_NAME_2)]
+        [TestCase(TAPDTestProjectSetting.STORY_ID_4, "change_name_4", TAPDTestProjectSetting.STORY_NAME_4)]
+        public void ChangeStory_Name_Succeed(long id, string name, string originalName)
+        {
+            TAPDChangeStoryRequest request = new TAPDChangeStoryRequest();
+
+            request.id = id;
+
+            request.name = name;
+
+            TAPDResponse<TAPDStory> response1 = m_Tapd.RequestChangeStory(request);
+
+            Assert.AreEqual(response1.data.name, name);
+
+            //重置父需求
+            request.name = originalName;
+
+            TAPDResponse<TAPDStory> response2 = m_Tapd.RequestChangeStory(request);
+
+            Assert.AreEqual(response2.data.name, originalName);
+        }
     }
 }

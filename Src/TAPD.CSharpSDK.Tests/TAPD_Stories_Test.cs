@@ -75,5 +75,29 @@ namespace TAPD.CSharpSDK.Tests
 
             return response.data;
         }
+
+        /// <summary>
+        /// 创建需求
+        /// 测试需谨慎，因为没有删除的API，需要手动删除
+        /// </summary>
+        [TestCase("New Story 1")]
+        [TestCase("New Story 2", TAPDTestProjectSetting.STORY_ID_1)]
+        public void CreateStory_Succeed(string name, long parentID = 0)
+        {
+            TAPDCreateStoryRequest request = new TAPDCreateStoryRequest();
+
+            request.name = name;
+
+            request.creator = "TAPD.SDK";
+
+            if (parentID != 0)
+            {
+                request.parentID = parentID;
+            }
+
+            TAPDResponse<TAPDStory> response = m_Tapd.RequestCreateStory(request);
+
+            Assert.IsNotNull(response.data.id);
+        }
     }
 }

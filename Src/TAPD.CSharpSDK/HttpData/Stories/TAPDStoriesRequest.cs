@@ -169,7 +169,7 @@ namespace TAPD.CSharpSDK
         /// 父需求
         /// </summary>
         [TAPDPropertyName("parent_id")]
-        public Nullable<int> parentID { get; set; }
+        public Nullable<long> parentID { get; set; }
 
         /// <summary>
         /// 子需求

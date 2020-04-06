@@ -134,6 +134,18 @@ namespace TAPD.CSharpSDK
         {
             return Request<TAPDStory>(TAPDHttpAPI.STORIES, request, new TAPDConverter<TAPDStory>(TAPDHttpPropertyName.STORY));
         }
+
+        /// <summary>
+        /// 创建需求
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public TAPDResponse<TAPDStory> RequestChangeStory(TAPDChangeStoryRequest request)
+        {
+            return Request<TAPDStory>(TAPDHttpAPI.STORIES, request, new TAPDConverter<TAPDStory>(TAPDHttpPropertyName.STORY));
+        }
+
+
         /// <summary>
         /// 请求协议
         /// </summary>

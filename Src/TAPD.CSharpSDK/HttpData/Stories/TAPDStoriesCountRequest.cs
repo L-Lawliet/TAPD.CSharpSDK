@@ -147,7 +147,7 @@ namespace TAPD.CSharpSDK
         /// 支持枚举查询
         /// </summary>
         [TAPDPropertyName("category_id")]
-        public EnumIntProperty categoryID { get; set; }
+        public EnumLongProperty categoryID { get; set; }
 
         /// <summary>
         /// 发布计划

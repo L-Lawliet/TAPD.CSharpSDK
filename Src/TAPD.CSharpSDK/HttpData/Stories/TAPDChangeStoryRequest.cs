@@ -25,9 +25,8 @@ namespace TAPD.CSharpSDK
 
         /// <summary>
         /// 优先级	
-        /// 支持枚举查询
         /// </summary>
-        public EnumStringProperty priority { get; set; }
+        public string priority { get; set; }
 
         /// <summary>
         /// 业务价值
@@ -117,7 +116,7 @@ namespace TAPD.CSharpSDK
         /// 需求分类   
         /// </summary>
         [TAPDPropertyName("category_id")]
-        public EnumIntProperty categoryID { get; set; }
+        public Nullable<long> categoryID { get; set; }
 
         /// <summary>
         /// 发布计划

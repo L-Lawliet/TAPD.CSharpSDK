@@ -12,7 +12,7 @@ namespace TAPD.CSharpSDK.Tests
         [Test]
         public void Encode_Authorization_Succeed()
         {
-            TAPD tapd = new TAPD("api_user","api_password");
+            Tapd tapd = new Tapd("api_user","api_password");
 
             Assert.AreEqual(tapd.authorization, "Basic YXBpX3VzZXI6YXBpX3Bhc3N3b3Jk");
         }
@@ -36,7 +36,7 @@ namespace TAPD.CSharpSDK.Tests
         [Test]
         public void Request_API_Authorized()
         {
-            TAPD tapd = new TAPD(TAPDTestAuthorization.API_USER, TAPDTestAuthorization.API_PASSWORD);
+            Tapd tapd = new Tapd(TAPDTestAuthorization.API_USER, TAPDTestAuthorization.API_PASSWORD);
 
             var response = tapd.Request<object>("quickstart/testauth");
 
@@ -49,7 +49,7 @@ namespace TAPD.CSharpSDK.Tests
         [Test]
         public void Request_API_Unauthorized()
         {
-            TAPD tapd = new TAPD("null", "null");
+            Tapd tapd = new Tapd("null", "null");
 
             var response = tapd.Request<string>("quickstart/testauth");
 

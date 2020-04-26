@@ -9,7 +9,7 @@ namespace TAPD.CSharpSDK.Tests
     [TestFixture]
     public class TAPD_Stories_Test
     {
-        private TAPD m_Tapd;
+        private Tapd m_Tapd;
 
         /// <summary>
         /// 初始化TAPD
@@ -18,7 +18,7 @@ namespace TAPD.CSharpSDK.Tests
         [SetUp]
         public void SetUp()
         {
-            m_Tapd = new TAPD(TAPDTestAuthorization.API_USER, TAPDTestAuthorization.API_PASSWORD, TAPDTestProjectSetting.WORK_SPACE_ID);
+            m_Tapd = new Tapd(TAPDTestAuthorization.API_USER, TAPDTestAuthorization.API_PASSWORD, TAPDTestProjectSetting.WORK_SPACE_ID);
         }
 
         /// <summary>

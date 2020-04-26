@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TAPD.CSharpSDK
 {
-    public class TAPD
+    public class Tapd
     {
         /// <summary>
         /// 身份验证信息
@@ -87,7 +87,7 @@ namespace TAPD.CSharpSDK
         /// <summary>
         /// TAPD构建函数
         /// </summary>
-        public TAPD()
+        public Tapd()
         {
 
         }
@@ -97,7 +97,7 @@ namespace TAPD.CSharpSDK
         /// </summary>
         /// <param name="apiUser">账号</param>
         /// <param name="apiPassword">口令</param>
-        public TAPD(string apiUser, string apiPassword, int workspaceID = 0)
+        public Tapd(string apiUser, string apiPassword, int workspaceID = 0)
         {
             m_ApiUser = apiUser;
             m_ApiPassword = apiPassword;

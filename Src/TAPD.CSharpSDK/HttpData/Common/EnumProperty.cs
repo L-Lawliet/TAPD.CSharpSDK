@@ -24,6 +24,26 @@ namespace TAPD.CSharpSDK
     }
 
     /// <summary>
+    /// 基于长整型的枚举
+    /// </summary>
+    public class EnumLongProperty : EnumProperty<long>
+    {
+        public EnumLongProperty() : base()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="enums"></param>
+        public EnumLongProperty(params long[] enums) : base(enums)
+        {
+
+        }
+    }
+
+    /// <summary>
     /// 基于字符串的枚举属性
     /// </summary>
     public class EnumStringProperty : EnumProperty<string>
